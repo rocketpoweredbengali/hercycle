@@ -12,6 +12,10 @@ import {
   CalendarCheck2,
   Smile,
   Thermometer,
+  Zap,
+  Leaf,
+  Heart,
+  Brain,
 } from "lucide-react"
 
 const kpis = [
@@ -39,6 +43,28 @@ const kpis = [
     subtitle: "Normal",
     icon: Thermometer,
   },
+]
+
+const nutritionTips = [
+    {
+        icon: Leaf,
+        tip: "Focus on antioxidant-rich foods like berries and leafy greens to support egg quality."
+    },
+    {
+        icon: Zap,
+        tip: "Ensure adequate intake of B vitamins and zinc for hormonal balance."
+    },
+]
+
+const wellnessTips = [
+    {
+        icon: Heart,
+        tip: "Engage in high-impact workouts like HIIT or dance cardio to match your energy levels."
+    },
+    {
+        icon: Brain,
+        tip: "Your communication skills are at their peak. It's a great time for important conversations."
+    }
 ]
 
 export default function DashboardPage() {
@@ -124,6 +150,42 @@ export default function DashboardPage() {
              <p className="text-sm text-center text-muted-foreground py-8">
                 Log your symptoms to see more personalized insights.
              </p>
+          </CardContent>
+        </Card>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle>Nutrition</CardTitle>
+            <CardDescription>
+              Personalized nutrition tips for your current cycle phase.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-4">
+                {nutritionTips.map((tip, index) => (
+                    <li key={index} className="flex items-start">
+                        <tip.icon className="h-5 w-5 mr-3 text-primary" />
+                        <span>{tip.tip}</span>
+                    </li>
+                ))}
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle>Wellness</CardTitle>
+            <CardDescription>
+              Wellness and exercise recommendations for today.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+             <ul className="space-y-4">
+                {wellnessTips.map((tip, index) => (
+                    <li key={index} className="flex items-start">
+                        <tip.icon className="h-5 w-5 mr-3 text-primary" />
+                        <span>{tip.tip}</span>
+                    </li>
+                ))}
+            </ul>
           </CardContent>
         </Card>
       </div>
