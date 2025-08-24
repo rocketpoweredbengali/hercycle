@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { auth } from "@/lib/firebase"
-import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth"
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, AuthError } from "firebase/auth"
 import { useToast } from "@/hooks/use-toast"
 import { useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
@@ -23,6 +23,24 @@ export default function LoginPage() {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(true)
+
+  const handleAuthError = (error: AuthError) => {
+    console.error("Google Sign-In Error:", error)
+    if (error.code === 'auth/unauthorized-domain') {
+        toast({
+          title: "Domain Not Authorized",
+          description: "Please add 'localhost' to the authorized domains in your Firebase project's authentication settings.",
+          variant: "destructive",
+          duration: 9000,
+        })
+    } else {
+       toast({
+          title: "Authentication Failed",
+          description: "Could not complete sign-in with Google. Please try again.",
+          variant: "destructive",
+        })
+    }
+  }
 
   useEffect(() => {
     const checkRedirectResult = async () => {
@@ -33,12 +51,7 @@ export default function LoginPage() {
           router.push('/onboarding')
         }
       } catch (error) {
-        console.error("Google Sign-In Error on redirect:", error)
-        toast({
-          title: "Authentication Failed",
-          description: "Could not complete sign-in with Google. Please try again.",
-          variant: "destructive",
-        })
+        handleAuthError(error as AuthError)
       } finally {
         setIsLoading(false)
       }
@@ -53,12 +66,7 @@ export default function LoginPage() {
       await signInWithRedirect(auth, provider)
     } catch (error) {
       setIsLoading(false)
-      console.error("Google Sign-In Error:", error)
-      toast({
-        title: "Authentication Failed",
-        description: "Could not start sign-in with Google. Please try again.",
-        variant: "destructive",
-      })
+      handleAuthError(error as AuthError)
     }
   }
 
