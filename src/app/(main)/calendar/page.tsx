@@ -46,7 +46,7 @@ export default function CalendarPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column */}
-        <div className="lg:col-span-2 flex flex-col items-center space-y-6">
+        <div className="lg:col-span-2 flex flex-col items-start space-y-6">
           <div className="flex items-center space-x-2 p-2 rounded-lg bg-gradient-to-r from-purple-200/50 to-emerald-200/50">
             <Popover>
               <PopoverTrigger asChild>
