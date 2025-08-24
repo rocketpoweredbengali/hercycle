@@ -76,14 +76,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <SidebarGroupLabel>{group}</SidebarGroupLabel>
                 {items.map((item) => (
                   <SidebarMenuItem key={item.href}>
-                    <Link href={item.href} legacyBehavior passHref>
+                    <Link href={item.href} passHref>
                       <SidebarMenuButton
+                        asChild
                         isActive={pathname.startsWith(item.href)}
                         tooltip={item.label}
                         className="transition-transform duration-200 hover:scale-105"
                       >
-                        <item.icon />
-                        <span>{item.label}</span>
+                        <>
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </>
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
