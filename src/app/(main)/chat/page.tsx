@@ -1,7 +1,7 @@
 "use client"
 
 import { aiHealthChat } from "@/ai/flows/ai-health-chat"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { MessageCircle, Send, User } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { Icons } from "@/components/icons"
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface Message {
   id: number
@@ -107,7 +109,15 @@ export default function ChatPage() {
                     : "bg-muted"
                 )}
               >
-                {message.text}
+                {message.sender === 'ai' ? (
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {message.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  message.text
+                )}
               </div>
               {message.sender === "user" && (
                 <Avatar className="h-8 w-8">
