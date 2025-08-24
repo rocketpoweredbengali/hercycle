@@ -35,50 +35,50 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-      <div className="flex flex-col items-center justify-between space-y-4 text-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight font-headline relative inline-block">
-            Cycle Calendar
-            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-primary/50 to-emerald-300/50 rounded-full"></span>
-          </h1>
-          <p className="text-muted-foreground mt-2">A gentle look at your cycle ahead 🌸</p>
-        </div>
-        <div className="flex items-center space-x-2 p-2 rounded-lg bg-gradient-to-r from-purple-200/50 to-emerald-200/50">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[240px] justify-start text-left font-normal shadow-sm",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date
-                  ? new Date(date).toLocaleString("default", {
-                      month: "long",
-                      year: "numeric",
-                    })
-                  : <span>Pick a month</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-                modifiers={modifiers}
-                modifiersClassNames={modifiersClassNames}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+    <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold tracking-tight font-headline relative inline-block">
+          Cycle Calendar
+          <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-primary/50 to-emerald-300/50 rounded-full"></span>
+        </h1>
+        <p className="text-muted-foreground mt-2">A gentle look at your cycle ahead 🌸</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <Card className="shadow-lg">
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column */}
+        <div className="lg:col-span-2 flex flex-col items-center space-y-6">
+          <div className="flex items-center space-x-2 p-2 rounded-lg bg-gradient-to-r from-purple-200/50 to-emerald-200/50">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[240px] justify-start text-left font-normal shadow-sm",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date
+                    ? new Date(date).toLocaleString("default", {
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : <span>Pick a month</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="center">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                  modifiers={modifiers}
+                  modifiersClassNames={modifiersClassNames}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <Card className="shadow-lg w-full">
             <CardContent className="p-0">
               <Calendar
                 mode="single"
@@ -91,7 +91,9 @@ export default function CalendarPage() {
             </CardContent>
           </Card>
         </div>
-        <div className="space-y-4">
+
+        {/* Right Column */}
+        <div className="space-y-6">
           <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Legend</CardTitle>
@@ -107,7 +109,7 @@ export default function CalendarPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                 <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary/20 text-primary-foreground">
+                 <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary/20 text-primary">
                   <Sun className="h-5 w-5" />
                 </div>
                 <div>
