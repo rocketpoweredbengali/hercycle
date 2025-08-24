@@ -5,13 +5,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  projectId: "hercycle-7arfa",
-  appId: "1:652126255730:web:23221e31d4a66446d620eb",
-  storageBucket: "hercycle-7arfa.firebasestorage.app",
-  apiKey: "AIzaSyDJgF_LTpqyO85gRAy-BlkF7zUuOksVK9U",
-  authDomain: "hercycle-7arfa.firebaseapp.com",
-  measurementId: "",
-  messagingSenderId: "652126255730"
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 };
 
 // Initialize Firebase
