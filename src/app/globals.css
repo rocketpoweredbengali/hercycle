@@ -62,15 +62,12 @@
     @apply bg-background text-foreground;
   }
   .day-period {
-    @apply bg-accent/30 text-accent-foreground;
-  }
-  .day-period.day-today {
-     @apply bg-accent/50;
+    @apply !rounded-full bg-accent/80 text-accent-foreground font-semibold transition-transform duration-200 hover:scale-110 hover:animate-pulse;
   }
   .day-ovulation {
-    @apply bg-primary/30 text-primary-foreground;
+    @apply !rounded-full bg-primary/80 text-primary-foreground font-semibold ring-2 ring-primary/50 shadow-lg transition-transform duration-200 hover:scale-110;
   }
-   .day-ovulation.day-today {
-     @apply bg-primary/50;
+  .day-today {
+     @apply !rounded-full bg-emerald-400 text-white font-bold ring-2 ring-emerald-500/50 shadow-lg;
   }
 }
