@@ -14,23 +14,49 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { auth } from "@/lib/firebase"
-import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth"
 import { useToast } from "@/hooks/use-toast"
+import { useEffect, useState } from "react"
+import { Loader2 } from "lucide-react"
 
 export default function SignupPage() {
   const router = useRouter()
   const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const checkRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth)
+        if (result) {
+          // User signed up successfully.
+          router.push('/onboarding')
+        }
+      } catch (error) {
+        console.error("Google Sign-Up Error on redirect:", error)
+        toast({
+          title: "Authentication Failed",
+          description: "Could not complete sign-up with Google. Please try again.",
+          variant: "destructive",
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    checkRedirectResult()
+  }, [router, toast])
 
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider()
     try {
-      await signInWithPopup(auth, provider)
-      router.push('/onboarding')
+      setIsLoading(true)
+      await signInWithRedirect(auth, provider)
     } catch (error) {
+      setIsLoading(false)
       console.error("Google Sign-Up Error:", error)
       toast({
         title: "Authentication Failed",
-        description: "Could not sign up with Google. Please try again.",
+        description: "Could not start sign-up with Google. Please try again.",
         variant: "destructive",
       })
     }
@@ -38,11 +64,19 @@ export default function SignupPage() {
 
   const handleEmailSignUp = (e: React.FormEvent) => {
     e.preventDefault()
-    // This is still a mock, we can implement it later if needed.
     toast({
       title: "Coming Soon!",
       description: "Email/password sign-up is not yet available. Please use Google Sign-Up.",
     })
+  }
+  
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+        <p className="mt-4 text-muted-foreground">Creating your account...</p>
+      </div>
+    )
   }
 
   return (
