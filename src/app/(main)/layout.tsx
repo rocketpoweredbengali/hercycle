@@ -124,7 +124,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </Button>
             </div>
           </header>
-        {children}
+        <main>{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )
