@@ -25,13 +25,15 @@ import {
   Meh,
   SmileIcon,
   HeartPulse,
+  Moon,
+  Flower2,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Textarea } from "@/components/ui/textarea"
 import * as React from "react"
-
+import { Progress } from "@/components/ui/progress"
 
 const kpis = [
   {
@@ -74,9 +76,38 @@ const moods = [
     { id: 'annoyed', label: 'Annoyed', icon: Annoyed },
 ];
 
+const cycleDay = 14;
+const cycleLength = 28;
+
+const phases = [
+    { name: 'Menstruation', start: 1, end: 5, icon: Droplet, color: "bg-accent", tip: "Focus on rest and iron-rich foods." },
+    { name: 'Follicular', start: 1, end: 13, icon: Leaf, color: "bg-primary/30", tip: "Your body is prepping for ovulation. Light cardio and strength training are great now." },
+    { name: 'Ovulation', start: 14, end: 14, icon: Flower2, color: "bg-primary", tip: "Energy is at its peak! It's the best time for high-impact workouts." },
+    { name: 'Luteal', start: 15, end: 28, icon: Moon, color: "bg-primary/60", tip: "Listen to your body; you might prefer gentle exercises like yoga or walking." },
+];
+
+const getCurrentPhase = (day: number) => {
+    // Ovulation is a single day, handle it first
+    if (day === 14) return phases[2];
+    // Menstruation is a sub-phase of Follicular, but we show it first
+    if (day >= 1 && day <= 5) return phases[0];
+    if (day >= 1 && day <= 13) return phases[1];
+    if (day >= 15 && day <= 28) return phases[3];
+    return phases[1]; // Default to follicular
+};
+
 export default function DashboardPage() {
   const [selectedSymptoms, setSelectedSymptoms] = React.useState<string[]>([]);
   const [selectedMood, setSelectedMood] = React.useState<string | null>(null);
+  
+  const currentPhase = getCurrentPhase(cycleDay);
+  const cycleProgress = (cycleDay / cycleLength) * 100;
+  const nextMilestone = () => {
+    if (cycleDay < 14) return `Ovulation in ${14 - cycleDay} days`;
+    if (cycleDay === 14) return "Luteal phase starts tomorrow";
+    if (cycleDay < 28) return `Next period in ${28 - cycleDay} days`;
+    return "New cycle starts tomorrow";
+  }
 
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -108,46 +139,32 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Your Cycle Phases</CardTitle>
-            <CardDescription>
-              A visual guide to your current and upcoming phases.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between items-center text-xs text-center">
-                <div className="w-1/4">
-                    <div className="h-2 bg-accent rounded-l-full"></div>
-                    <p className="mt-1 font-semibold">Menstruation</p>
-                    <p className="text-muted-foreground">Day 1-5</p>
-                </div>
-                <div className="w-1/4">
-                    <div className="h-2 bg-primary/30"></div>
-                     <p className="mt-1 font-semibold">Follicular</p>
-                     <p className="text-muted-foreground">Day 1-13</p>
-                </div>
-                 <div className="w-1/4 relative">
-                    <div className="h-2 bg-primary"></div>
-                    <p className="mt-1 font-semibold">Ovulation</p>
-                    <p className="text-muted-foreground">Day 14</p>
-                </div>
-                <div className="w-1/4">
-                    <div className="h-2 bg-primary/60 rounded-r-full"></div>
-                    <p className="mt-1 font-semibold">Luteal</p>
-                    <p className="text-muted-foreground">Day 15-28</p>
-                </div>
-            </div>
-             <div className="relative mt-2">
-                <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden flex">
-                    <div className="w-1/4 bg-accent"></div>
-                    <div className="w-1/4 bg-primary/30"></div>
-                    <div className="w-1/4 bg-primary"></div>
-                    <div className="w-1/4 bg-primary/60"></div>
-                </div>
-                {/* Indicator for current day */}
-                <div className="absolute top-[-4px] h-4 w-1 bg-foreground rounded-full" style={{ left: '50%' }}></div>
-            </div>
-          </CardContent>
+           <CardHeader>
+             <CardTitle>Your Cycle View</CardTitle>
+             <CardDescription>
+               You are on <span className="font-bold text-primary">Day {cycleDay}</span> of your cycle.
+             </CardDescription>
+           </CardHeader>
+           <CardContent className="space-y-4">
+             <div className="relative pt-2">
+                <Progress value={cycleProgress} className="h-2"/>
+                <div className="absolute top-0 h-4 w-1 bg-foreground rounded-full" style={{ left: `calc(${cycleProgress}% - 2px)` }}></div>
+             </div>
+             <div className="flex justify-between text-xs text-muted-foreground">
+               {phases.map(phase => (
+                    <div key={phase.name} className={`flex flex-col items-center text-center ${cycleDay >= phase.start && cycleDay <= phase.end ? 'font-bold text-primary' : ''}`}>
+                       <phase.icon className="h-5 w-5 mb-1"/>
+                       <span>{phase.name}</span>
+                    </div>
+               ))}
+             </div>
+             <div className="p-4 rounded-lg bg-muted/50 text-center">
+                <p className="text-sm font-medium">{currentPhase.tip}</p>
+             </div>
+             <p className="text-sm text-center text-muted-foreground font-medium">
+                Next Milestone: <span className="text-foreground">{nextMilestone()}</span>
+             </p>
+           </CardContent>
         </Card>
         <Card className="shadow-lg">
           <CardHeader>
