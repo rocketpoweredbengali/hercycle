@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -88,12 +89,13 @@ const phases = [
 
 const getCurrentPhase = (day: number) => {
     // Ovulation is a single day, handle it first
-    if (day === 14) return phases[2];
+    if (day === 14) return phases[2]; // Ovulation
     // Menstruation is a sub-phase of Follicular, but we show it first
-    if (day >= 1 && day <= 5) return phases[0];
-    if (day >= 1 && day <= 13) return phases[1];
-    if (day >= 15 && day <= 28) return phases[3];
-    return phases[1]; // Default to follicular
+    if (day >= 1 && day <= 5) return phases[0]; // Menstruation
+    if (day > 5 && day <= 13) return phases[1]; // Follicular
+    if (day > 14 && day <= 28) return phases[3]; // Luteal
+    // Default fallback to follicular for any other case
+    return phases[1]; 
 };
 
 export default function DashboardPage() {
