@@ -62,8 +62,8 @@ const aiHealthChatFlow = ai.defineFlow(
     inputSchema: AIHealthChatInputSchema,
     outputSchema: AIHealthChatOutputSchema,
   },
-  async input => {
-    const {output} = await prompt(input);
+  async (input) => {
+    const {output} = await prompt({query: input.query});
     return output!;
   }
 );
