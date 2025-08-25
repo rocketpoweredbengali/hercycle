@@ -29,6 +29,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.8rem;
+    --sidebar-border: hsl(261 20% 80% / 0.7);
+    --sidebar-accent: hsl(0 0% 100% / 0.5);
+    --sidebar-accent-foreground: hsl(var(--foreground));
+    --sidebar-ring: hsl(var(--primary));
   }
 
   .dark {
@@ -51,6 +55,10 @@
     --border: 261 20% 30%;
     --input: 261 20% 25%;
     --ring: 261 100% 78%;
+    --sidebar-border: hsl(261 20% 40% / 0.7);
+    --sidebar-accent: hsl(0 0% 100% / 0.1);
+    --sidebar-accent-foreground: hsl(var(--foreground));
+    --sidebar-ring: hsl(var(--primary));
   }
 }
 
@@ -62,12 +70,15 @@
     @apply bg-background text-foreground;
   }
   .day-period {
-    @apply !rounded-full bg-accent/80 text-accent-foreground font-semibold transition-transform duration-200 hover:scale-110 hover:animate-pulse;
+    @apply !rounded-full bg-accent/80 text-accent-foreground font-semibold transition-transform duration-200 hover:scale-110 hover:shadow-lg;
   }
   .day-ovulation {
     @apply !rounded-full bg-primary/80 text-primary-foreground font-semibold ring-2 ring-primary/50 shadow-lg transition-transform duration-200 hover:scale-110;
   }
   .day-today {
      @apply !rounded-full bg-emerald-400 text-white font-bold ring-2 ring-emerald-500/50 shadow-lg;
+  }
+  .day:not(.day-disabled):hover {
+    @apply bg-muted/80 rounded-md shadow-md;
   }
 }

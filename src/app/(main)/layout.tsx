@@ -6,6 +6,9 @@ import {
   Home,
   LineChart,
   MessageCircle,
+  Leaf,
+  Heart,
+  Settings,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -24,8 +27,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
   SidebarGroup,
-  SidebarGroupLabel
+  SidebarGroupLabel,
+  SidebarSeparator
 } from "@/components/ui/sidebar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const navItems = {
   "Tracking": [
@@ -34,6 +39,8 @@ const navItems = {
     { href: "/insights", icon: LineChart, label: "Insights" },
   ],
   "Wellness": [
+    { href: "/nutrition", icon: Leaf, label: "Nutrition" },
+    { href: "/wellness", icon: Heart, label: "Wellness" },
     { href: "/chat", icon: MessageCircle, label: "Maitri AI" },
   ],
 }
@@ -43,17 +50,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar variant="floating">
         <SidebarHeader>
           <div className="flex flex-col items-center gap-2 text-center p-4">
             <Icons.logo className="h-10 w-10 text-primary" />
-            <div className="text-center">
+            <div className="text-center group-data-[collapsible=icon]:hidden">
               <span className="text-xl font-bold font-headline tracking-tighter">
                 HerCycle
               </span>
-              <p className="text-xs text-muted-foreground">
-                AI Women’s Health Companion
-              </p>
             </div>
           </div>
         </SidebarHeader>
@@ -61,7 +65,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarMenu>
             {Object.entries(navItems).map(([group, items]) => (
               <SidebarGroup key={group}>
-                <SidebarGroupLabel>{group}</SidebarGroupLabel>
+                <SidebarGroupLabel className="group-data-[collapsible=icon]:-mt-4">{group}</SidebarGroupLabel>
                 {items.map((item) => (
                   <SidebarMenuItem key={item.href}>
                     <Link href={item.href}>
@@ -73,21 +77,32 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       >
                         <span>
                           <item.icon />
-                          <span>{item.label}</span>
+                          <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                         </span>
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
                 ))}
+                <SidebarSeparator className="my-2 group-data-[collapsible=icon]:hidden"/>
               </SidebarGroup>
             ))}
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-            <div className="flex items-center justify-center p-4">
-                <p className="text-xs text-center text-muted-foreground">
-                    Built with 🌸 in Firebase Studio
-                </p>
+            <div className="p-2 w-full group-data-[collapsible=icon]:p-0">
+               <div className="p-2 rounded-lg bg-background/50 flex items-center gap-3">
+                 <Avatar className="h-10 w-10">
+                   <AvatarImage src="https://placehold.co/100x100.png" alt="User" />
+                   <AvatarFallback>J</AvatarFallback>
+                 </Avatar>
+                 <div className="flex-1 group-data-[collapsible=icon]:hidden">
+                   <p className="font-semibold text-sm">Jane Doe</p>
+                   <p className="text-xs text-muted-foreground">Premium User</p>
+                 </div>
+                 <Button variant="ghost" size="icon" className="group-data-[collapsible=icon]:hidden">
+                   <Settings className="h-5 w-5"/>
+                 </Button>
+               </div>
             </div>
         </SidebarFooter>
       </Sidebar>

@@ -16,7 +16,9 @@ import {
   Leaf,
   Heart,
   Brain,
+  ArrowRight,
 } from "lucide-react"
+import Link from "next/link"
 
 const kpis = [
   {
@@ -43,28 +45,6 @@ const kpis = [
     subtitle: "Normal",
     icon: Thermometer,
   },
-]
-
-const nutritionTips = [
-    {
-        icon: Leaf,
-        tip: "Focus on antioxidant-rich foods like berries and leafy greens to support egg quality."
-    },
-    {
-        icon: Zap,
-        tip: "Ensure adequate intake of B vitamins and zinc for hormonal balance."
-    },
-]
-
-const wellnessTips = [
-    {
-        icon: Heart,
-        tip: "Engage in high-impact workouts like HIIT or dance cardio to match your energy levels."
-    },
-    {
-        icon: Brain,
-        tip: "Your communication skills are at their peak. It's a great time for important conversations."
-    }
 ]
 
 export default function DashboardPage() {
@@ -152,42 +132,44 @@ export default function DashboardPage() {
              </p>
           </CardContent>
         </Card>
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Nutrition</CardTitle>
-            <CardDescription>
-              Personalized nutrition tips for your current cycle phase.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-                {nutritionTips.map((tip, index) => (
-                    <li key={index} className="flex items-start">
-                        <tip.icon className="h-5 w-5 mr-3 text-primary" />
-                        <span>{tip.tip}</span>
-                    </li>
-                ))}
-            </ul>
-          </CardContent>
-        </Card>
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Wellness</CardTitle>
-            <CardDescription>
-              Wellness and exercise recommendations for today.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-             <ul className="space-y-4">
-                {wellnessTips.map((tip, index) => (
-                    <li key={index} className="flex items-start">
-                        <tip.icon className="h-5 w-5 mr-3 text-primary" />
-                        <span>{tip.tip}</span>
-                    </li>
-                ))}
-            </ul>
-          </CardContent>
-        </Card>
+        
+        {/* Quick View Cards */}
+        <Link href="/nutrition" className="group">
+          <Card className="shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Nutrition</span>
+                <Leaf className="text-primary"/>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Today's Focus: Antioxidant-rich foods</p>
+            </CardContent>
+            <CardContent>
+              <div className="text-sm text-primary group-hover:underline flex items-center">
+                View Recommendations <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/wellness" className="group">
+          <Card className="shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Wellness</span>
+                 <Heart className="text-primary"/>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Today's Workout: Dance cardio</p>
+            </CardContent>
+             <CardContent>
+              <div className="text-sm text-primary group-hover:underline flex items-center">
+                View Recommendations <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </div>
   )
