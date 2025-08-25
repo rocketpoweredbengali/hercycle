@@ -9,6 +9,7 @@ import {
   Leaf,
   Heart,
   Settings,
+  User,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -91,10 +92,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
             <div className="p-2 w-full group-data-[collapsible=icon]:p-0">
                <div className="p-2 rounded-lg bg-background/50 flex items-center gap-3">
-                 <Avatar className="h-10 w-10">
-                   <AvatarImage src="https://placehold.co/100x100.png" alt="User" />
-                   <AvatarFallback>J</AvatarFallback>
-                 </Avatar>
+                 <Link href="/profile" className="flex-shrink-0">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src="https://placehold.co/100x100.png" alt="User" />
+                      <AvatarFallback>J</AvatarFallback>
+                    </Avatar>
+                 </Link>
                  <div className="flex-1 group-data-[collapsible=icon]:hidden">
                    <p className="font-semibold text-sm">Jane Doe</p>
                    <p className="text-xs text-muted-foreground">Premium User</p>

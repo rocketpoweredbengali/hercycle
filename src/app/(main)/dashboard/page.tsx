@@ -17,8 +17,21 @@ import {
   Heart,
   Brain,
   ArrowRight,
+  PlusCircle,
+  Pill,
+  Droplet,
+  Annoyed,
+  Frown,
+  Meh,
+  SmileIcon,
+  HeartPulse,
 } from "lucide-react"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Textarea } from "@/components/ui/textarea"
+import * as React from "react"
+
 
 const kpis = [
   {
@@ -47,7 +60,24 @@ const kpis = [
   },
 ]
 
+const symptoms = [
+    { id: 'cramps', label: 'Cramps', icon: HeartPulse },
+    { id: 'bloating', label: 'Bloating', icon: Droplet },
+    { id: 'headache', label: 'Headache', icon: Brain },
+    { id: 'acne', label: 'Acne', icon: Pill },
+];
+
+const moods = [
+    { id: 'happy', label: 'Happy', icon: SmileIcon },
+    { id: 'neutral', label: 'Neutral', icon: Meh },
+    { id: 'sad', label: 'Sad', icon: Frown },
+    { id: 'annoyed', label: 'Annoyed', icon: Annoyed },
+];
+
 export default function DashboardPage() {
+  const [selectedSymptoms, setSelectedSymptoms] = React.useState<string[]>([]);
+  const [selectedMood, setSelectedMood] = React.useState<string | null>(null);
+
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
       <div className="space-y-2">
@@ -126,10 +156,36 @@ export default function DashboardPage() {
               Log your symptoms, mood, and notes for today.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-             <p className="text-sm text-center text-muted-foreground py-8">
-                Log your symptoms to see more personalized insights.
-             </p>
+          <CardContent className="space-y-6">
+            <div>
+                <h4 className="font-medium mb-2 text-sm">Symptoms</h4>
+                <ToggleGroup type="multiple" value={selectedSymptoms} onValueChange={setSelectedSymptoms} className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {symptoms.map(symptom => (
+                        <ToggleGroupItem key={symptom.id} value={symptom.id} className="h-16 flex-col text-xs gap-1">
+                            <symptom.icon className="h-5 w-5"/>
+                            <span>{symptom.label}</span>
+                        </ToggleGroupItem>
+                    ))}
+                </ToggleGroup>
+            </div>
+             <div>
+                <h4 className="font-medium mb-2 text-sm">Mood</h4>
+                <ToggleGroup type="single" value={selectedMood || ''} onValueChange={(value) => setSelectedMood(value)} className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                     {moods.map(mood => (
+                        <ToggleGroupItem key={mood.id} value={mood.id} className="h-16 flex-col text-xs gap-1">
+                            <mood.icon className="h-5 w-5"/>
+                            <span>{mood.label}</span>
+                        </ToggleGroupItem>
+                    ))}
+                </ToggleGroup>
+            </div>
+            <div>
+                <h4 className="font-medium mb-2 text-sm">Notes</h4>
+                <Textarea placeholder="Any additional notes..."/>
+            </div>
+            <Button className="w-full font-bold">
+                <PlusCircle className="mr-2 h-5 w-5"/> Log Today's Data
+            </Button>
           </CardContent>
         </Card>
         
