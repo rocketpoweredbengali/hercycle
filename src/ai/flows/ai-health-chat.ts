@@ -11,6 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 const AIHealthChatInputSchema = z.object({
   query: z.string().describe('The user query about their health or cycle.'),
@@ -30,6 +31,7 @@ const prompt = ai.definePrompt({
   name: 'aiHealthChatPrompt',
   input: {schema: AIHealthChatInputSchema},
   output: {schema: AIHealthChatOutputSchema},
+  model: googleAI('gemini-pro'),
   prompt: `You are Maitri, an AI health assistant specializing in women's health and menstrual cycles.
   Your tone must be empathetic, supportive, and calming at all times.
 
