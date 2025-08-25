@@ -84,6 +84,7 @@ export default function OnboardingPage() {
       goals: [],
       pregnancyGoal: "",
       birthControl: { use: "no" },
+      birthYear: "" as any, // Fix: Initialize with an empty string
       isPregnantOrBreastfeeding: "",
     },
   })
