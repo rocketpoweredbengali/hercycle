@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
 export default function Home() {
-  redirect('/onboarding');
+  redirect('/dashboard');
   return null;
 }
