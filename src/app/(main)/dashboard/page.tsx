@@ -1,4 +1,3 @@
-
 "use client"
 
 import {
@@ -88,21 +87,26 @@ const phases = [
 ];
 
 const getCurrentPhase = (day: number) => {
-    // Ovulation is a single day, handle it first
-    if (day === 14) return phases[2]; // Ovulation
-    // Menstruation is a sub-phase of Follicular, but we show it first
-    if (day >= 1 && day <= 5) return phases[0]; // Menstruation
-    if (day > 5 && day <= 13) return phases[1]; // Follicular
-    if (day > 14 && day <= 28) return phases[3]; // Luteal
-    // Default fallback to follicular for any other case
-    return phases[1]; 
+    // Ovulation is a single day, handle it first as a priority
+    const ovulationPhase = phases.find(p => p.name === 'Ovulation');
+    if (day === ovulationPhase?.start) return ovulationPhase;
+
+    // Menstruation is a sub-phase of Follicular, but we show its specific tip
+    const menstruationPhase = phases.find(p => p.name === 'Menstruation');
+    if (day >= menstruationPhase?.start! && day <= menstruationPhase?.end!) return menstruationPhase;
+
+    // Find the current phase based on the day
+    const phase = phases.find(p => day >= p.start && day <= p.end);
+    
+    // Fallback to the first phase (Follicular, as Menstruation is handled) if no other phase matches
+    return phase || phases[1];
 };
 
 export default function DashboardPage() {
   const [selectedSymptoms, setSelectedSymptoms] = React.useState<string[]>([]);
   const [selectedMood, setSelectedMood] = React.useState<string | null>(null);
   
-  const currentPhase = getCurrentPhase(cycleDay);
+  const currentPhase = getCurrentPhase(cycleDay)!; // Non-null assertion as getCurrentPhase now always returns a phase
   const cycleProgress = (cycleDay / cycleLength) * 100;
   const nextMilestone = () => {
     if (cycleDay < 14) return `Ovulation in ${14 - cycleDay} days`;
